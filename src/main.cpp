@@ -128,25 +128,15 @@ void startup_game()
         record_error("Unable to init SDL.");
     }
 
-    SDL_version v;
-    SDL_VERSION(&v);
-    write_to_log("SDL compile-time version: %u.%u.%u", v.major, v.minor, v.patch);
-    v = *SDL_Linked_Version();
-    write_to_log("SDL runtime version: %u.%u.%u", v.major, v.minor, v.patch);
-
-
     // Create the screen surface
+	SDL_ShowCursor( SDL_DISABLE );
+    #ifdef RS97
+    screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, 16, SDL_HWSURFACE);  
+    #else
     screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, 16, surface_type | SDL_HWPALETTE | SDL_DOUBLEBUF );
-
-    SDL_ShowCursor( SDL_DISABLE );
+    #endif
 
     write_to_log("Videomode set");
-
-    write_to_log("Video info:");
-    const SDL_VideoInfo *vinfo = SDL_GetVideoInfo();
-
-    write_to_log(" - Video memory: %d", vinfo->video_mem );
-    //write_to_log(" - Video width: %d, height: %d", vinfo->current_w, vinfo->current_h );
 
     // Do PC specific stuff
 #ifdef PLATFORM_PC

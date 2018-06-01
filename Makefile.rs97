@@ -12,10 +12,10 @@ SDL_LIBS    := $(shell $(SYSROOT)/usr/bin/sdl-config --libs)
 
 OUTPUTNAME = dlight.dge
 
-DEFINES = -DNOJOY
+DEFINES = -DNOJOY -DRS97
 INCLUDES = -I. -Isrc
 
-OPT_FLAGS  = -Ofast -march=mips32 -fdata-sections -ffunction-sections -mhard-float
+OPT_FLAGS  = -O2 -march=mips32 -fdata-sections -ffunction-sections -mhard-float
 
 CFLAGS = $(DEFINES) $(INCLUDES) $(OPT_FLAGS) -std=gnu11 
 CXXFLAGS = $(DEFINES) $(INCLUDES) $(OPT_FLAGS) -std=gnu++11 
@@ -43,9 +43,12 @@ executable : $(OBJS)
 	$(CC) -o $(OUTPUTNAME) $(OBJS) $(CFLAGS) $(LDFLAGS)
 	
 dist:
-	mv $(OUTPUTNAME) ./dist/$(OUTPUTNAME)
+	cp $(OUTPUTNAME) ./dist/$(OUTPUTNAME)
 	cp -r ./Data ./dist/Data
-	mksquashfs ./dist dlight_rs97.opk -all-root -noappend -no-exports -no-xattrs
+	cd dist
+	zip -r dlight_rs97.zip dlight.dge default.gcw0.desktop icon.png ./Data
 
 clean:
 	rm $(OBJS) $(OUTPUTNAME)
+	rm -r ./dist/Data ./dist/$(OUTPUTNAME)
+	
