@@ -567,7 +567,7 @@ void draw_title_text()
         else if ( dpad == 1 )
         {
             option -= 1;
-            if ( option < 1 ) option = 5;
+            if ( option < 0 ) option = 5;
             al2sdl_clear_input();
             PlaySound( sfx_chains );
             draw_menu(option);

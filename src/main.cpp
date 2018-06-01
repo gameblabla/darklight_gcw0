@@ -123,7 +123,7 @@ void startup_game()
 
     write_to_log("Initiating SDL");
     // Initialize all SDL subsystems
-    if ( SDL_Init( SDL_INIT_EVERYTHING ) == -1 )
+    if ( SDL_Init( SDL_INIT_VIDEO ) == -1 )
     {
         record_error("Unable to init SDL.");
     }
@@ -133,7 +133,7 @@ void startup_game()
     #ifdef RS97
     screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, 16, SDL_HWSURFACE);  
     #else
-    screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, 16, surface_type | SDL_HWPALETTE | SDL_DOUBLEBUF );
+    screen = SDL_SetVideoMode( SCREEN_WIDTH, SCREEN_HEIGHT, 16, surface_type | SDL_DOUBLEBUF );
     #endif
 
     write_to_log("Videomode set");
@@ -152,7 +152,7 @@ void startup_game()
 
     write_to_log("Loading font");
     TTF_Init();
-    sdlfont = TTF_OpenFont("./Data/arcadepi.ttf", 10);
+    sdlfont = TTF_OpenFont("Data/arcadepi.ttf", 10);
     if (!sdlfont)
     {
         record_error("Unable to load font!");
@@ -184,7 +184,7 @@ void startup_game()
     map = SDL_CreateRGBSurface(SDL_SWSURFACE,TILES_X,TILES_Y,16,0,0,0,0);
     //clear_to_color(map, 0);
 
-    SDL_Surface *tmp = IMG_Load("./Data/tiles.bmp");
+    SDL_Surface *tmp = IMG_Load("Data/tiles.bmp");
     if (!tmp)
     {
         record_error("Unable to load tiles!");
@@ -192,14 +192,14 @@ void startup_game()
     tiles = SDL_ConvertSurface( tmp, screen->format, surface_type );
     SDL_SetColorKey( tiles, SDL_SRCCOLORKEY, SDL_MapRGB( screen->format, 174,105,174) );
 
-    tmp = IMG_Load("./Data/title.png");
+    tmp = IMG_Load("Data/title.png");
     if (!tmp)
     {
         record_error("Unable to load title!");
     }
     title_image = SDL_ConvertSurface( tmp, screen->format, surface_type );
 
-    tmp = IMG_Load("./Data/title_text.png");
+    tmp = IMG_Load("Data/title_text.png");
     if (!tmp)
     {
         record_error("Unable to load title text!");
@@ -208,7 +208,7 @@ void startup_game()
     SDL_SetColorKey( title_text, SDL_SRCCOLORKEY, SDL_MapRGB( screen->format, 174,105,174) );
 
 
-    tmp = IMG_Load("./Data/options.png");
+    tmp = IMG_Load("Data/options.png");
     if (!tmp)
     {
         record_error("Unable to load title options!");
@@ -217,7 +217,7 @@ void startup_game()
     SDL_SetColorKey( title_options, SDL_SRCCOLORKEY, SDL_MapRGB( screen->format, 174,105,174) );
 
 
-    tmp = IMG_Load("./Data/balance.png");
+    tmp = IMG_Load("Data/balance.png");
     if (!tmp)
     {
         record_error("Unable to balance image!");
@@ -226,14 +226,14 @@ void startup_game()
     //SDL_SetColorKey( balance, SDL_SRCCOLORKEY, SDL_MapRGB( screen->format, 174,105,174) );
 
 
-    tmp = IMG_Load("./Data/balancebg.png");
+    tmp = IMG_Load("Data/balancebg.png");
     if (!tmp)
     {
         record_error("Unable to balance background!");
     }
     balancebg = SDL_ConvertSurface( tmp, screen->format, surface_type );
 
-    tmp = IMG_Load("./Data/cursor.png");
+    tmp = IMG_Load("Data/cursor.png");
     if (!tmp)
     {
         record_error("Unable to load cursor!");
@@ -241,7 +241,7 @@ void startup_game()
     cursor = SDL_ConvertSurface( tmp, screen->format, surface_type );
     SDL_SetColorKey( cursor, SDL_SRCCOLORKEY, SDL_MapRGB( screen->format, 174,105,174) );
 
-    tmp = IMG_Load("./Data/cmove.png");
+    tmp = IMG_Load("Data/cmove.png");
     if (!tmp)
     {
         record_error("Unable to load move cursor!");
@@ -253,41 +253,41 @@ void startup_game()
 
     write_to_log("Loading sound effects and music");
 
-    sfx_hit = Mix_LoadWAV("./Data/hit.wav");
+    sfx_hit = Mix_LoadWAV("Data/hit.wav");
     if ( !sfx_hit ) record_error("Unable to load hit.wav");
 
-    sfx_arrow = Mix_LoadWAV("./Data/arrow.wav");
+    sfx_arrow = Mix_LoadWAV("Data/arrow.wav");
     if ( !sfx_arrow ) record_error("Unable to load arrow.wav");
 
-    sfx_fireball = Mix_LoadWAV("./Data/fireball.wav");
+    sfx_fireball = Mix_LoadWAV("Data/fireball.wav");
     if ( !sfx_fireball ) record_error("Unable to load fireball.wav");
 
-    sfx_spawn = Mix_LoadWAV("./Data/spawn.wav");
+    sfx_spawn = Mix_LoadWAV("Data/spawn.wav");
     if ( !sfx_spawn ) record_error("Unable to load spawn.wav");
 
-    sfx_castle = Mix_LoadWAV("./Data/castle.wav");
+    sfx_castle = Mix_LoadWAV("Data/castle.wav");
     if ( !sfx_castle ) record_error("Unable to load castle.wav");
 
-    sfx_step = Mix_LoadWAV("./Data/step.wav");
+    sfx_step = Mix_LoadWAV("Data/step.wav");
     if ( !sfx_step ) record_error("Unable to load step.wav");
 
-    sfx_chains = Mix_LoadWAV("./Data/chains.wav");
+    sfx_chains = Mix_LoadWAV("Data/chains.wav");
     if ( !sfx_chains ) record_error("Unable to load chains.wav");
 
-    sfx_gameover = Mix_LoadWAV("./Data/gameover.wav");
+    sfx_gameover = Mix_LoadWAV("Data/gameover.wav");
     if ( !sfx_gameover ) record_error("Unable to load gameover.wav");
 
 
-    mus_title = Mix_LoadMUS("./Data/creek.ogg");
+    mus_title = Mix_LoadMUS("Data/creek.ogg");
     if ( !mus_title ) record_error("Unable to open the title music!");
 
-    mus_balanced = Mix_LoadMUS("./Data/pyramid.mod");
+    mus_balanced = Mix_LoadMUS("Data/pyramid.mod");
     if ( !mus_balanced ) record_error("Unable to open the balanced music!");
 
-    mus_light = Mix_LoadMUS("./Data/spacemaz.mod");
+    mus_light = Mix_LoadMUS("Data/spacemaz.mod");
     if ( !mus_light ) record_error("Unable to open the light music!");
 
-    mus_dark = Mix_LoadMUS("./Data/fastelmo.ogg");
+    mus_dark = Mix_LoadMUS("Data/fastelmo.ogg");
     if ( !mus_dark ) record_error("Unable to open the dark music!");
 
     init_al2sdl();

@@ -15,11 +15,11 @@ OUTPUTNAME = dlight.dge
 DEFINES = -DNOJOY -DRS97
 INCLUDES = -I. -Isrc
 
-OPT_FLAGS  = -O2 -march=mips32 -fdata-sections -ffunction-sections -mhard-float
+OPT_FLAGS  = -O2
 
 CFLAGS = $(DEFINES) $(INCLUDES) $(OPT_FLAGS) -std=gnu11 
 CXXFLAGS = $(DEFINES) $(INCLUDES) $(OPT_FLAGS) -std=gnu++11 
-LDFLAGS = $(SDL_LIBS) -lfreetype -lSDL_image -lSDL_mixer -lSDL_ttf -lSDL_gfx -lSDL -s -Wl,--as-needed -Wl,--gc-sections -flto
+LDFLAGS = $(SDL_LIBS) -lfreetype -lSDL_image -lSDL_mixer -lSDL_ttf -lSDL_gfx -lSDL
 
 # Redream (main engine)
 OBJS =  \
@@ -43,12 +43,11 @@ executable : $(OBJS)
 	$(CC) -o $(OUTPUTNAME) $(OBJS) $(CFLAGS) $(LDFLAGS)
 	
 dist:
-	cp $(OUTPUTNAME) ./dist/$(OUTPUTNAME)
-	cp -r ./Data ./dist/Data
-	cd dist
-	zip -r dlight_rs97.zip dlight.dge default.gcw0.desktop icon.png ./Data
+	cp $(OUTPUTNAME) ./dlight/$(OUTPUTNAME)
+	cp -r ./Data ./dlight/Data
+	zip -r dlight_rs97.zip ./dlight
 
 clean:
 	rm $(OBJS) $(OUTPUTNAME)
-	rm -r ./dist/Data ./dist/$(OUTPUTNAME)
+	rm -r ./dlight/Data ./dlight/$(OUTPUTNAME)
 	
