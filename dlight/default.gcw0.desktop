@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Dark Light
 Comment=Strategy game
-Exec=run.sh
+Exec=run.dge
 Icon=icon
 Categories=games;
 X-OD-Manual=README.txt
