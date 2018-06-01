@@ -1,0 +1,51 @@
+#
+# Makefile for RS-97
+#
+CHAINPREFIX=/opt/rs97-toolchain
+CROSS_COMPILE=$(CHAINPREFIX)/usr/bin/mipsel-linux-
+CC = $(CROSS_COMPILE)gcc
+CXX = $(CROSS_COMPILE)g++
+STRIP = $(CROSS_COMPILE)strip
+SYSROOT     := $(CHAINPREFIX)/usr/mipsel-buildroot-linux-uclibc/sysroot
+SDL_CFLAGS  := $(shell $(SYSROOT)/usr/bin/sdl-config --cflags)
+SDL_LIBS    := $(shell $(SYSROOT)/usr/bin/sdl-config --libs)
+
+OUTPUTNAME = dlight.dge
+
+DEFINES = -DNOJOY
+INCLUDES = -I. -Isrc
+
+OPT_FLAGS  = -Ofast -march=mips32 -fdata-sections -ffunction-sections -mhard-float
+
+CFLAGS = $(DEFINES) $(INCLUDES) $(OPT_FLAGS) -std=gnu11 
+CXXFLAGS = $(DEFINES) $(INCLUDES) $(OPT_FLAGS) -std=gnu++11 
+LDFLAGS = $(SDL_LIBS) -lfreetype -lSDL_image -lSDL_mixer -lSDL_ttf -lSDL_gfx -lSDL -s -Wl,--as-needed -Wl,--gc-sections -flto
+
+# Redream (main engine)
+OBJS =  \
+	./src/ai.o \
+	./src/al2sdl.o \
+	./src/log.o \
+	./src/main.o \
+	./src/screen.o \
+	./src/sound.o \
+	./src/unit.o \
+
+.c.o:
+	$(CC) $(CFLAGS) -c -o $@ $< 
+	
+.CC.o:
+	$(CXX) $(CXXFLAGS) -c -o $@ $< 
+	
+all: executable
+
+executable : $(OBJS)
+	$(CC) -o $(OUTPUTNAME) $(OBJS) $(CFLAGS) $(LDFLAGS)
+	
+dist:
+	mv $(OUTPUTNAME) ./dist/$(OUTPUTNAME)
+	cp -r ./Data ./dist/Data
+	mksquashfs ./dist dlight_rs97.opk -all-root -noappend -no-exports -no-xattrs
+
+clean:
+	rm $(OBJS) $(OUTPUTNAME)

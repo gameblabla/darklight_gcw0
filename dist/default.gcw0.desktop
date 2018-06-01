@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Dark Light
+Comment=Strategy game
+Exec=dlight.dge
+Icon=icon
+Categories=games;
+X-OD-Manual=README.txt
