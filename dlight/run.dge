@@ -1,5 +1,2 @@
 #!/bin/sh
-dir=`dirname $0`
-cd $dir
-export LD_PRELOAD=$PWD/sdlfix.so
-./dlight.dge
+LD_PRELOAD=./sdlfix.so ./dlight.dge
